@@ -8,6 +8,15 @@
                 class="needs-validation"
                 enctype="multipart/form-data"
                 >
+             <!-- // Adding tools in Nav-bar -->
+                <!-- <div class="mb-3">
+                     <label for="category" class="form-label" >Enter category of Listing:</label>
+                     <select name="listing[category]" id="category" required class="form-control">
+                         <option value="Trending" <%= listing.category==='Trending' ? 'selected' : '' %>>Trending</option>
+
+                     </select>
+                    </div> -->
+
                 <div class="md-3">
                     <label for="title" class="form-label">Title</label>
                     <input name="listing[title]" value="<%=listing.title %>" type="text" class="form-control" required/>

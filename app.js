@@ -22,8 +22,8 @@ const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-
-const dbUrl = process.env.ATLASDB_URL; 
+const dbUrl = "mongodb://127.0.0.1:27017/wanderlust";
+// const dbUrl = process.env.ATLASDB_URL; 
 
 main() 
     .then(() => {
@@ -44,21 +44,21 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 
-const store = MongoStore.create({
-    mongoUrl: dbUrl,
-    crypto: {
-        secret: process.env.SECRET,
-    },
-    touchAfter: 24*3600,
-});
+// const store = MongoStore.create({
+//     mongoUrl: dbUrl,
+//     crypto: {
+//         secret: process.env.SECRET,
+//     },
+//     touchAfter: 24*3600,
+// });
 
- store.on("error", () => {
-   console.log("Error in MONGO SESSION STORE" , err); 
+//  store.on("error", () => {
+//    console.log("Error in MONGO SESSION STORE" , err); 
    
- });
+//  });
 
 const sessionOptions = {
-    store: store,
+    // store: store,
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true, 
@@ -125,6 +125,7 @@ app.all("*", (req, res, next) => {
 });
 app.use((err, req, res, next) => {
     let { statusCode = 500, message = "Something Went Wrong" } = err;
+    console.log(err);
     res.status(statusCode).render("error.ejs", { message });
     // res.status(statusCode).send(message);
 });
