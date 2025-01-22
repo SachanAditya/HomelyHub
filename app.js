@@ -22,8 +22,9 @@ const listings = require("./routes/listing.js");
 const reviews = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 
-const dbUrl = "mongodb://127.0.0.1:27017/wanderlust";
-// const dbUrl = process.env.ATLASDB_URL; 
+
+// const dbUrl = "mongodb://127.0.0.1:27017/wanderlust";
+const dbUrl = process.env.ATLASDB_URL; 
 
 main() 
     .then(() => {
@@ -44,21 +45,21 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
 
-// const store = MongoStore.create({
-//     mongoUrl: dbUrl,
-//     crypto: {
-//         secret: process.env.SECRET,
-//     },
-//     touchAfter: 24*3600,
-// });
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    crypto: {
+        secret: process.env.SECRET,
+    },
+    touchAfter: 24*3600,
+});
 
-//  store.on("error", () => {
-//    console.log("Error in MONGO SESSION STORE" , err); 
+ store.on("error", () => {
+   console.log("Error in MONGO SESSION STORE" , err); 
    
-//  });
+ });
 
 const sessionOptions = {
-    // store: store,
+    store: store,
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true, 
@@ -73,6 +74,8 @@ const sessionOptions = {
 //     res.send("Hi , I am root");
 // })
 
+// Serch button
+// app.use("/listings", listings);
 
 
 app.use(session(sessionOptions));
@@ -119,6 +122,7 @@ app.use((req, res, next) => {
 app.use("/listings",listings);
 app.use("/listings/:id/reviews",reviews); 
 app.use("/" , userRouter);
+
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "page Not Found"));

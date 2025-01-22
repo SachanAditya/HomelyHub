@@ -10,6 +10,7 @@ const { storage } = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 
+
 router
     .route("/")
     .get(wrapAsync(listingController.index))
@@ -35,5 +36,16 @@ router
     .route("/:id/edit")
     .get(isLoggedIn, isOwner, wrapAsync(listingController.editForm));
 
+
+    // router.get("/search", wrapAsync(async (req, res) => {
+    //     const { location, place } = req.query;
+    
+    //     const query = {};
+    //     if (location) query.location = new RegExp(location, "i");
+    //     if (place) query.place = new RegExp(place, "i");
+    
+    //     const listings = await Listing.find(query);
+    //     res.render("listings/searchResults.ejs", { listings, location, place });
+    // }));
 
 module.exports = router;
